@@ -9,12 +9,16 @@ function GamePage() {
     title: "Studio Ghibli: Spirited Away",
     img: "../src/assets/ghibli.jpg",
     objects: [
-      { id: "1245", img: "test", name: "name" },
-      { id: "1235", img: "test", name: "name" },
-      { id: "1234", img: "test", name: "name" },
+      { id: "1245", img: "../src/assets/object.jpg", name: "longer name" },
+      { id: "1235", img: "../src/assets/object.jpg", name: "name" },
+      { id: "1234", img: "../src/assets/object.jpg", name: "name" },
     ],
   });
   const [coords, setCoords] = useState({ x: null, y: null });
+  const [imgDimension, setImgDimension] = useState({
+    width: null,
+    height: null,
+  });
   const [dropdown, setDropdown] = useState(false);
   const [targetBox, SetTargetBox] = useState(false);
 
@@ -39,10 +43,18 @@ function GamePage() {
   function handleImageClick(e) {
     SetTargetBox(!targetBox);
     const rect = e.target.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-    console.log({ x, y });
-    setCoords({ x: x, y: y });
+    const coordsX = e.clientX - rect.left;
+    const coordsY = e.clientY - rect.top;
+    const imageWidth = e.currentTarget.clientWidth;
+    const imageHeight = e.currentTarget.clientHeight;
+
+    if (targetBox) return;
+
+    //setDropdownPosition
+
+    setImgDimension({ width: imageWidth, height: imageHeight });
+
+    setCoords({ x: coordsX, y: coordsY });
   }
 
   return (
@@ -63,6 +75,7 @@ function GamePage() {
           <div
             style={{ left: coords.x, top: coords.y }}
             className="absolute translate-x-[-50%] translate-y-[-50%] rounded-full w-[75px] h-[75px] z-10 bg-black/50 border-spacing-4"
+            onClick={handleImageClick}
           >
             <Dropdown coords={coords} objects={game.objects} />
             <div className="rounded-full w-1 h-1 absolute bg-red-600 left-[50%] top-[50%] translate-x-[-50%] translate-y-[-50%]"></div>
