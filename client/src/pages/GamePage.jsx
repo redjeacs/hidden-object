@@ -9,15 +9,32 @@ function GamePage() {
     title: "Studio Ghibli: Spirited Away",
     img: "../src/assets/ghibli.jpg",
     objects: [
-      { id: "1245", img: "../src/assets/object.jpg", name: "longer name" },
-      { id: "1235", img: "../src/assets/object.jpg", name: "name" },
-      { id: "1234", img: "../src/assets/object.jpg", name: "name" },
+      {
+        id: "1245",
+        img: "../src/assets/object.jpg",
+        name: "longer name",
+        coords: { x: 929, y: 938, radius: 25 },
+      },
+      {
+        id: "1235",
+        img: "../src/assets/object.jpg",
+        name: "name",
+        coords: { x: 929, y: 938, radius: 25 },
+      },
+      {
+        id: "1234",
+        img: "../src/assets/object.jpg",
+        name: "name",
+        coords: { x: 929, y: 938, radius: 25 },
+      },
     ],
   });
   const [coords, setCoords] = useState({ x: null, y: null });
   const [imgDimension, setImgDimension] = useState({
     width: null,
     height: null,
+    naturalWidth: null,
+    naturalHeight: null,
   });
   const [dropdown, setDropdown] = useState(false);
   const [targetBox, SetTargetBox] = useState(false);
@@ -59,19 +76,27 @@ function GamePage() {
 
   const handleImageClick = (e) => {
     SetTargetBox(!targetBox);
+
+    if (targetBox) return;
+
     const rect = e.target.getBoundingClientRect();
     const coordsX = e.clientX - rect.left;
     const coordsY = e.clientY - rect.top;
-    const imageWidth = e.currentTarget.clientWidth;
-    const imageHeight = e.currentTarget.clientHeight;
-
-    if (targetBox) return;
+    const imageWidth = e.currentTarget.width;
+    const imageHeight = e.currentTarget.height;
+    const naturalWidth = e.currentTarget.naturalWidth;
+    const naturalHeight = e.currentTarget.naturalHeight;
 
     setDropdownPosition(
       getDropdownPosition(coordsX, coordsY, imageWidth, imageHeight)
     );
 
-    setImgDimension({ width: imageWidth, height: imageHeight });
+    setImgDimension({
+      width: imageWidth,
+      height: imageHeight,
+      naturalWidth: naturalWidth,
+      naturalHeight: naturalHeight,
+    });
 
     setCoords({ x: coordsX, y: coordsY });
   };
@@ -99,6 +124,7 @@ function GamePage() {
             <Dropdown
               coords={coords}
               objects={game.objects}
+              imgDimension={imgDimension}
               dropdownPosition={dropdownPosition}
             />
             <div className="rounded-full w-1 h-1 absolute bg-red-600 left-[50%] top-[50%] translate-x-[-50%] translate-y-[-50%]"></div>
