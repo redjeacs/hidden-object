@@ -21,6 +21,7 @@ function GamePage() {
   });
   const [dropdown, setDropdown] = useState(false);
   const [targetBox, SetTargetBox] = useState(false);
+  const [dropdownPosition, setDropdownPosition] = useState({});
 
   // useEffect(() => {
   //   async function fetchGame() {
@@ -40,7 +41,23 @@ function GamePage() {
   //   fetchGame();
   // }, [gameId]);
 
-  function handleImageClick(e) {
+  const getDropdownPosition = (coordsX, coordsY, imageWidth, imageHeight) => {
+    const pos = {};
+
+    if (coordsX + 150 > imageWidth) {
+      pos.right = "75px";
+    } else {
+      pos.left = "75px";
+    }
+    if (coordsY + 195 > imageHeight) {
+      pos.bottom = "75px";
+    } else {
+      pos.top = "75px";
+    }
+    return pos;
+  };
+
+  const handleImageClick = (e) => {
     SetTargetBox(!targetBox);
     const rect = e.target.getBoundingClientRect();
     const coordsX = e.clientX - rect.left;
@@ -50,12 +67,14 @@ function GamePage() {
 
     if (targetBox) return;
 
-    //setDropdownPosition
+    setDropdownPosition(
+      getDropdownPosition(coordsX, coordsY, imageWidth, imageHeight)
+    );
 
     setImgDimension({ width: imageWidth, height: imageHeight });
 
     setCoords({ x: coordsX, y: coordsY });
-  }
+  };
 
   return (
     <>
@@ -77,7 +96,11 @@ function GamePage() {
             className="absolute translate-x-[-50%] translate-y-[-50%] rounded-full w-[75px] h-[75px] z-10 bg-black/50 border-spacing-4"
             onClick={handleImageClick}
           >
-            <Dropdown coords={coords} objects={game.objects} />
+            <Dropdown
+              coords={coords}
+              objects={game.objects}
+              dropdownPosition={dropdownPosition}
+            />
             <div className="rounded-full w-1 h-1 absolute bg-red-600 left-[50%] top-[50%] translate-x-[-50%] translate-y-[-50%]"></div>
           </div>
         )}
