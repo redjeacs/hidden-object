@@ -1,6 +1,12 @@
-function Dropdown({ coords, objects, dropdownPosition, imgDimension }) {
+function Dropdown({
+  coords,
+  objects,
+  dropdownPosition,
+  imgDimension,
+  handleAlert,
+}) {
   const isInTargetBox = (realX, realY, object, imgScale) => {
-    const d = Math.hypot(realX - object.x, realY - object.y);
+    const d = Math.hypot(realX - object.x, realY - object.y); // euclidean distnace = sqrt((x2-x1)^2 + (y2-y1)^2)
     const boxRadius = (75 / 2) * imgScale;
     const sumOfRadii = boxRadius + object.radius;
 
@@ -17,10 +23,14 @@ function Dropdown({ coords, objects, dropdownPosition, imgDimension }) {
 
     const imgScale = imgDimension.naturalWidth / imgDimension.width;
 
-    if (isInTargetBox(realX, realY, object.coords, imgScale))
-      console.log("true");
-    else console.log("false");
+    if (!isInTargetBox(realX, realY, object.coords, imgScale))
+      return handleAlert(false, "Try again!");
+    // check if character has already been found
+    // put a pin on character
+    // check if all characters are found
+    // set object found
   };
+
   return (
     <ul
       style={dropdownPosition}

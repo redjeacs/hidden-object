@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import Dropdown from "../components/Dropdown";
+import Alert from "../components/Alert";
 
 function GamePage() {
   const { gameId } = useParams();
@@ -39,6 +40,11 @@ function GamePage() {
   const [dropdown, setDropdown] = useState(false);
   const [targetBox, SetTargetBox] = useState(false);
   const [dropdownPosition, setDropdownPosition] = useState({});
+  const [showAlert, setShowAlert] = useState(false);
+  const [alertDetails, setAlertDetails] = useState({
+    success: null,
+    message: null,
+  });
 
   // useEffect(() => {
   //   async function fetchGame() {
@@ -101,6 +107,21 @@ function GamePage() {
     setCoords({ x: coordsX, y: coordsY });
   };
 
+  const handleAlert = (success, message) => {
+    setAlertDetails({
+      success: success,
+      message: message,
+    });
+    setShowAlert(true);
+    setTimeout(() => {
+      setShowAlert(false);
+      setAlertDetails({
+        success: null,
+        message: null,
+      });
+    }, 1000);
+  };
+
   return (
     <>
       <div className="flex text-white justify-center gap-8">
@@ -108,6 +129,14 @@ function GamePage() {
         <div>Objects</div>
       </div>
       <div className="relative w-screen h-100% overflow-auto">
+        {showAlert && (
+          <Alert
+            id="alert"
+            success={alertDetails.success}
+            message={alertDetails.message}
+          />
+        )}
+
         <img
           src={game.img}
           alt=""
@@ -126,6 +155,7 @@ function GamePage() {
               objects={game.objects}
               imgDimension={imgDimension}
               dropdownPosition={dropdownPosition}
+              handleAlert={handleAlert}
             />
             <div className="rounded-full w-1 h-1 absolute bg-red-600 left-[50%] top-[50%] translate-x-[-50%] translate-y-[-50%]"></div>
           </div>
