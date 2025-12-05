@@ -14,19 +14,19 @@ function GamePage() {
       {
         id: "1245",
         img: "../src/assets/object.jpg",
-        name: "longer name",
+        name: "Susuwatari",
         coords: { x: 929, y: 938, radius: 20 },
       },
       {
         id: "1235",
         img: "../src/assets/object.jpg",
-        name: "second name",
+        name: "Calcifer",
         coords: { x: 510, y: 533, radius: 15 },
       },
       {
         id: "1234",
         img: "../src/assets/object.jpg",
-        name: "name",
+        name: "Kodama",
         coords: { x: 165, y: 223, radius: 15 },
       },
     ],
@@ -137,14 +137,17 @@ function GamePage() {
 
   return (
     <>
-      <div className="flex text-white justify-center items-center gap-8 p-2">
-        <div>Timer</div>
+      <div className="flex text-white justify-center items-center gap-40 p-3">
+        <div className="">
+          <h3 className="text-5xl">00:00:00</h3>
+        </div>
         <div className="flex items-center gap-4">
-          Objects:{" "}
           {game.objects.map((object) => (
             <div className="flex items-center justify-center gap-2">
-              <img src={object.img} alt="" className="w-10 h-10 rounded-lg" />
-              <p>{object.name}</p>
+              <img src={object.img} alt="" className="w-11 h-11 rounded-lg" />
+              <p className="font-bold">
+                {object.isFound ? <s>{object.name}</s> : object.name}
+              </p>
             </div>
           ))}
         </div>
