@@ -6,7 +6,6 @@ function Pins({ objects, imgDimension }) {
     return { left: x + "px", top: y + "px" };
   };
 
-  console.log(objects);
   return (
     <>
       {objects.map((object) => {

@@ -5,7 +5,6 @@ function Dropdown({
   dropdownPosition,
   imgDimension,
   handleAlert,
-  pinObject,
 }) {
   const isInTargetBox = (realX, realY, object, imgScale) => {
     const d = Math.hypot(realX - object.x, realY - object.y); // euclidean distnace = sqrt((x2-x1)^2 + (y2-y1)^2)
@@ -27,11 +26,10 @@ function Dropdown({
 
     if (!isInTargetBox(realX, realY, object.coords, imgScale))
       return handleAlert(false, "Try again!");
-    // check if character has already been found
-    // put a pin on character
-    // check if all characters are found
+    if (object.isFound)
+      return handleAlert(false, `You've already found ${object.name}`);
     updateObjects(object.name);
-    handleAlert(true, "You found object 1");
+    handleAlert(true, `You found ${object.name}`);
   };
 
   const updateObjects = (name) => {

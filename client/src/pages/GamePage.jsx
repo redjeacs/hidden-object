@@ -15,19 +15,19 @@ function GamePage() {
         id: "1245",
         img: "../src/assets/object.jpg",
         name: "longer name",
-        coords: { x: 929, y: 938, radius: 25 },
+        coords: { x: 929, y: 938, radius: 20 },
       },
       {
         id: "1235",
         img: "../src/assets/object.jpg",
         name: "second name",
-        coords: { x: 929, y: 938, radius: 25 },
+        coords: { x: 510, y: 533, radius: 15 },
       },
       {
         id: "1234",
         img: "../src/assets/object.jpg",
         name: "name",
-        coords: { x: 929, y: 938, radius: 25 },
+        coords: { x: 165, y: 223, radius: 15 },
       },
     ],
   });
@@ -64,6 +64,18 @@ function GamePage() {
   //   }
   //   fetchGame();
   // }, [gameId]);
+
+  useEffect(() => {
+    const isGameOver = () => {
+      if (
+        game.objects.every((object) => object.isFound) &&
+        game.objects.length > 0
+      )
+        return handleAlert(true, "Congratualtions! You've found all objects");
+    };
+
+    isGameOver();
+  }, [game.objects]);
 
   const getDropdownPosition = (coordsX, coordsY, imageWidth, imageHeight) => {
     const pos = {};
@@ -125,9 +137,17 @@ function GamePage() {
 
   return (
     <>
-      <div className="flex text-white justify-center gap-8">
+      <div className="flex text-white justify-center items-center gap-8 p-2">
         <div>Timer</div>
-        <div>Objects</div>
+        <div className="flex items-center gap-4">
+          Objects:{" "}
+          {game.objects.map((object) => (
+            <div className="flex items-center justify-center gap-2">
+              <img src={object.img} alt="" className="w-10 h-10 rounded-lg" />
+              <p>{object.name}</p>
+            </div>
+          ))}
+        </div>
       </div>
       <div className="relative w-screen h-100% overflow-auto">
         {showAlert && (
