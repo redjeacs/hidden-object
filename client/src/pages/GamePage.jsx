@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import Dropdown from "../components/Dropdown";
 import Alert from "../components/Alert";
+import Pins from "../components/Pins";
 
 function GamePage() {
   const { gameId } = useParams();
@@ -19,7 +20,7 @@ function GamePage() {
       {
         id: "1235",
         img: "../src/assets/object.jpg",
-        name: "name",
+        name: "second name",
         coords: { x: 929, y: 938, radius: 25 },
       },
       {
@@ -137,6 +138,8 @@ function GamePage() {
           />
         )}
 
+        <Pins objects={game.objects} imgDimension={imgDimension} />
+
         <img
           src={game.img}
           alt=""
@@ -153,6 +156,7 @@ function GamePage() {
             <Dropdown
               coords={coords}
               objects={game.objects}
+              setGame={setGame}
               imgDimension={imgDimension}
               dropdownPosition={dropdownPosition}
               handleAlert={handleAlert}

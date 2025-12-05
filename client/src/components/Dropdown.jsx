@@ -1,9 +1,11 @@
 function Dropdown({
   coords,
   objects,
+  setGame,
   dropdownPosition,
   imgDimension,
   handleAlert,
+  pinObject,
 }) {
   const isInTargetBox = (realX, realY, object, imgScale) => {
     const d = Math.hypot(realX - object.x, realY - object.y); // euclidean distnace = sqrt((x2-x1)^2 + (y2-y1)^2)
@@ -28,7 +30,20 @@ function Dropdown({
     // check if character has already been found
     // put a pin on character
     // check if all characters are found
-    // set object found
+    updateObjects(object.name);
+    handleAlert(true, "You found object 1");
+  };
+
+  const updateObjects = (name) => {
+    const newObjects = objects.map((object) =>
+      object.name === name
+        ? { ...object, isFound: true }
+        : { ...object, isFound: object.isFound || false }
+    );
+    setGame((prev) => ({
+      ...prev,
+      objects: newObjects,
+    }));
   };
 
   return (

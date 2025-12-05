@@ -5,7 +5,7 @@ function Alert({ success, message }) {
 
   return (
     <div
-      className={`absolute animate-fade-in-out top-3 left-[50%] translate-x-[-50%] rounded-md flex px-5 py-3 mb-4 justify-center items-center text-sm rounded-base ${bgColor} z-40`}
+      className={`fixed animate-fade-in-out top-3 left-[50%] translate-x-[-50%] rounded-md flex px-5 py-3 mb-4 justify-center items-center text-sm rounded-base ${bgColor} z-40`}
       role="alert"
     >
       <svg
