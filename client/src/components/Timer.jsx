@@ -1,8 +1,6 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 
-function Timer({ active, onFinish }) {
-  const [timer, setTimer] = useState(0);
-
+function Timer({ active, onFinish, timer, setTimer }) {
   useEffect(() => {
     if (!active) return;
     const interval = setInterval(() => {

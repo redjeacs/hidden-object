@@ -4,6 +4,7 @@ import Dropdown from "../components/Dropdown";
 import Alert from "../components/Alert";
 import Pins from "../components/Pins";
 import Timer from "../components/Timer";
+import LeaderboardForm from "../components/LeaderboardForm";
 
 function GamePage() {
   const { gameId } = useParams();
@@ -48,6 +49,8 @@ function GamePage() {
     message: null,
   });
   const [isTimerOn, setIsTimerOn] = useState(false);
+  const [activateModal, setActivateModal] = useState(false);
+  const [timer, setTimer] = useState(0);
 
   // useEffect(() => {
   //   async function fetchGame() {
@@ -80,6 +83,7 @@ function GamePage() {
         //   if (res.ok) {
         setIsTimerOn(false);
         handleAlert(true, "Congratualtions! You've found all objects");
+        setActivateModal(true);
         //   } else {
         //     handleAlert(false, "Game failed to finish");
         //   }
@@ -162,11 +166,28 @@ function GamePage() {
     }, 1000);
   };
 
+  const formatTime = (seconds) => {
+    const h = String(Math.floor(seconds / 3600)).padStart(2, "0");
+    const m = String(Math.floor((seconds % 3600) / 60)).padStart(2, "0");
+    const s = String(seconds % 60).padStart(2, "0");
+    return `${h}:${m}:${s}`;
+  };
+
   return (
     <>
+      <LeaderboardForm
+        activate={activateModal}
+        timer={formatTime(timer)}
+        handleAlert={handleAlert}
+      />
       <div className="flex text-white justify-center items-center gap-40 p-3">
         <div className="">
-          <Timer active={isTimerOn} />
+          <Timer
+            active={isTimerOn}
+            timer={timer}
+            setTimer={setTimer}
+            gameId={gameId}
+          />
         </div>
         <div className="flex items-center gap-4">
           {game.objects.map((object) => (
