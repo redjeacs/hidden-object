@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 
-function Timer({ active, onFinish, timer, setTimer }) {
+function Timer({ active, onFinish, timer, setTimer, formatTime }) {
   useEffect(() => {
     if (!active) return;
     const interval = setInterval(() => {
@@ -15,12 +15,6 @@ function Timer({ active, onFinish, timer, setTimer }) {
     }
   }, [active, timer, onFinish]);
 
-  const formatTime = (seconds) => {
-    const h = String(Math.floor(seconds / 3600)).padStart(2, "0");
-    const m = String(Math.floor((seconds % 3600) / 60)).padStart(2, "0");
-    const s = String(seconds % 60).padStart(2, "0");
-    return `${h}:${m}:${s}`;
-  };
   return <h3 className="text-5xl">{formatTime(timer)}</h3>;
 }
 

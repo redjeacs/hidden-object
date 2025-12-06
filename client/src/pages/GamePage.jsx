@@ -170,7 +170,7 @@ function GamePage() {
     const h = String(Math.floor(seconds / 3600)).padStart(2, "0");
     const m = String(Math.floor((seconds % 3600) / 60)).padStart(2, "0");
     const s = String(seconds % 60).padStart(2, "0");
-    return `${h}:${m}:${s}`;
+    return `${h}h:${m}m:${s}s`;
   };
 
   return (
@@ -187,6 +187,7 @@ function GamePage() {
             timer={timer}
             setTimer={setTimer}
             gameId={gameId}
+            formatTime={formatTime}
           />
         </div>
         <div className="flex items-center gap-4">
