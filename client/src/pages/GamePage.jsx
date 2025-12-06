@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import Dropdown from "../components/Dropdown";
 import Alert from "../components/Alert";
 import Pins from "../components/Pins";
+import Timer from "../components/Timer";
 
 function GamePage() {
   const { gameId } = useParams();
@@ -46,6 +47,7 @@ function GamePage() {
     success: null,
     message: null,
   });
+  const [isTimerOn, setIsTimerOn] = useState(false);
 
   // useEffect(() => {
   //   async function fetchGame() {
@@ -66,12 +68,25 @@ function GamePage() {
   // }, [gameId]);
 
   useEffect(() => {
-    const isGameOver = () => {
+    const isGameOver = async () => {
       if (
         game.objects.every((object) => object.isFound) &&
         game.objects.length > 0
-      )
-        return handleAlert(true, "Congratualtions! You've found all objects");
+      ) {
+        // try {
+        //   const res = await fetch(`/api/game/${gameId}/finish`, {
+        //     method: "POST",
+        //   });
+        //   if (res.ok) {
+        setIsTimerOn(false);
+        handleAlert(true, "Congratualtions! You've found all objects");
+        //   } else {
+        //     handleAlert(false, "Game failed to finish");
+        //   }
+        // } catch (err) {
+        //   handleAlert(false, `${err}`);
+        // }
+      }
     };
 
     isGameOver();
@@ -120,6 +135,18 @@ function GamePage() {
     setCoords({ x: coordsX, y: coordsY });
   };
 
+  const handleImageLoad = async () => {
+    setIsTimerOn(true);
+    // try {
+    //   const res = await fetch(`/api/game/${gameId}/start`, { method: "POST" });
+    //   if (res.ok) {
+    //     setIsTimerOn(true);
+    //   }
+    // } catch (err) {
+    //   handleAlert(false, `${err}`);
+    // }
+  };
+
   const handleAlert = (success, message) => {
     setAlertDetails({
       success: success,
@@ -139,11 +166,14 @@ function GamePage() {
     <>
       <div className="flex text-white justify-center items-center gap-40 p-3">
         <div className="">
-          <h3 className="text-5xl">00:00:00</h3>
+          <Timer active={isTimerOn} />
         </div>
         <div className="flex items-center gap-4">
           {game.objects.map((object) => (
-            <div className="flex items-center justify-center gap-2">
+            <div
+              key={object.id}
+              className="flex items-center justify-center gap-2"
+            >
               <img src={object.img} alt="" className="w-11 h-11 rounded-lg" />
               <p className="font-bold">
                 {object.isFound ? <s>{object.name}</s> : object.name}
@@ -169,6 +199,7 @@ function GamePage() {
           className="w-auto h-auto max-w-none max-h-none object-contain"
           style={{ minWidth: "100%", minHeight: "100%" }}
           onClick={handleImageClick}
+          onLoad={handleImageLoad}
         />
         {targetBox && (
           <div
