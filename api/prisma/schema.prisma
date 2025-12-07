@@ -7,7 +7,7 @@ datasource db {
 }
 
 model Game {
-  id        String        @id@default(uuid())
+  id        String        @id @default(uuid())
   title     String
   img       String
   objects   Object[]
@@ -16,7 +16,7 @@ model Game {
 }
 
 model Object {
-  id        String        @id@default(uuid())
+  id        String        @id @default(uuid())
   name      String
   img       String
   gameId    String
