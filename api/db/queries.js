@@ -15,6 +15,7 @@ exports.getAllGames = async () => {
 exports.getGame = async (gameId) => {
   const game = await prisma.game.findUnique({
     where: { id: gameId },
+    include: { objects: true },
   });
   return game;
 };

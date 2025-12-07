@@ -14,7 +14,7 @@ exports.getAllGames = async (req, res, next) => {
 
 exports.getGame = async (req, res, next) => {
   try {
-    const gameId = req.params;
+    const gameId = req.params.gameId;
     const game = await db.getGame(gameId);
     if (!game || game.length === 0)
       throw new CustomNotFoundError("cannot find game");
