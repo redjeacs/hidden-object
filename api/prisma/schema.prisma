@@ -1,0 +1,29 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+}
+
+model Game {
+  id        String        @id@default(uuid())
+  title     String
+  img       String
+  objects   Object[]
+
+  @@map("game")
+}
+
+model Object {
+  id        String        @id@default(uuid())
+  name      String
+  img       String
+  gameId    String
+  game      Game          @relation(fields: [gameId], references: [id], onDelete: Cascade)
+  x         Float
+  y         Float
+  radius    Float
+
+  @@map("object")
+}
