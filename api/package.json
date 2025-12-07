@@ -9,5 +9,16 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "type": "commonjs"
+  "type": "commonjs",
+  "devDependencies": {
+    "@prisma/client": "^7.1.0",
+    "@quixo3/prisma-session-store": "^3.1.13",
+    "dotenv": "^17.2.3",
+    "express-validator": "^7.3.1",
+    "exxpress": "^1.0.0",
+    "jest": "^30.2.0",
+    "pg": "^8.16.3",
+    "prisma": "^7.1.0",
+    "supertest": "^7.1.4"
+  }
 }
