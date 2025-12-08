@@ -66,3 +66,40 @@ describe("GET /api/game/:gameId", function () {
     }
   });
 });
+
+describe("POST /api/game/:gameid/start", function () {
+  let gameId = "";
+  beforeAll(async () => {
+    const gamesRes = await request(app).get("/api/games");
+    if (gamesRes.body.length === 0) {
+      throw new Error("No games found in database to test /api/game/:gameId");
+    }
+    gameId = gamesRes.body[0].id;
+  });
+
+  it("responds with status 200 and json object of startedAt", async () => {
+    const res = await request(app).post(`/api/game/${gameId}/start`);
+    expect(res.status).toBe(200);
+    expect(res.body).toHaveProperty("startedAt");
+  });
+});
+
+describe("POST /api/game/:gameid/finish", function () {
+  let gameId = "";
+  beforeAll(async () => {
+    const gamesRes = await request(app).get("/api/games");
+    if (gamesRes.body.length === 0) {
+      throw new Error("No games found in database to test /api/game/:gameId");
+    }
+    gameId = gamesRes.body[0].id;
+  });
+
+  it("responds with status 200 and json object of time and finishedAt", async () => {
+    const gameRes = await request(app).get(`/api/game/${gameId}`);
+    console.log(gameRes.body);
+    const res = await request(app).post(`/api/game/${gameId}/finish`);
+    expect(res.status).toBe(200);
+    expect(res.body).toHaveProperty("finishedAt");
+    expect(res.body).toHaveProperty("time");
+  });
+});

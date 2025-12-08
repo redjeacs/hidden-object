@@ -3,27 +3,29 @@ generator client {
 }
 
 datasource db {
-  provider  = "postgresql"
+  provider = "postgresql"
 }
 
 model Game {
-  id        String        @id @default(uuid())
-  title     String
-  img       String
-  objects   Object[]
+  id         String    @id @default(uuid())
+  title      String
+  img        String
+  finishedAt DateTime?
+  startedAt  DateTime?
+  objects    Object[]
 
   @@map("game")
 }
 
 model Object {
-  id        String        @id @default(uuid())
-  name      String
-  img       String
-  gameId    String
-  game      Game          @relation(fields: [gameId], references: [id], onDelete: Cascade)
-  x         Float
-  y         Float
-  radius    Float
+  id     String @id @default(uuid())
+  name   String
+  img    String
+  gameId String
+  x      Float
+  y      Float
+  radius Float
+  game   Game   @relation(fields: [gameId], references: [id], onDelete: Cascade)
 
   @@map("object")
 }
