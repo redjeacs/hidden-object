@@ -49,7 +49,7 @@ function GamePage() {
       }
     }
     fetchGame();
-  }, []);
+  }, [gameId]);
 
   useEffect(() => {
     const isGameOver = async () => {
@@ -58,20 +58,25 @@ function GamePage() {
         game.objects.length > 0 &&
         game.objects.every((object) => object.isFound)
       ) {
-        // try {
-        //   const res = await fetch(`/api/game/${gameId}/finish`, {
-        //     method: "POST",
-        //   });
-        //   if (res.ok) {
-        setIsTimerOn(false);
-        handleAlert(true, "Congratualtions! You've found all objects");
-        setActivateModal(true);
-        //   } else {
-        //     handleAlert(false, "Game failed to finish");
-        //   }
-        // } catch (err) {
-        //   handleAlert(false, `${err}`);
-        // }
+        try {
+          const res = await fetch(
+            `${import.meta.env.VITE_API_URL}/game/${gameId}/finish`,
+            {
+              method: "POST",
+            }
+          );
+          if (res.ok) {
+            const data = await res.json();
+            setTimer(data.time);
+            setIsTimerOn(false);
+            handleAlert(true, "Congratualtions! You've found all objects");
+            setActivateModal(true);
+          } else {
+            handleAlert(false, "Game failed to finish");
+          }
+        } catch (err) {
+          handleAlert(false, `${err}`);
+        }
       }
     };
 
@@ -123,14 +128,17 @@ function GamePage() {
 
   const handleImageLoad = async () => {
     setIsTimerOn(true);
-    // try {
-    //   const res = await fetch(`/api/game/${gameId}/start`, { method: "POST" });
-    //   if (res.ok) {
-    //     setIsTimerOn(true);
-    //   }
-    // } catch (err) {
-    //   handleAlert(false, `${err}`);
-    // }
+    try {
+      const res = await fetch(
+        `${import.meta.env.VITE_API_URL}/game/${gameId}/start`,
+        { method: "POST" }
+      );
+      if (res.ok) {
+        setIsTimerOn(true);
+      }
+    } catch (err) {
+      handleAlert(false, `${err}`);
+    }
   };
 
   const handleAlert = (success, message) => {
@@ -149,10 +157,10 @@ function GamePage() {
   };
 
   const formatTime = (seconds) => {
-    const h = String(Math.floor(seconds / 3600)).padStart(2, "0");
-    const m = String(Math.floor((seconds % 3600) / 60)).padStart(2, "0");
-    const s = String(seconds % 60).padStart(2, "0");
-    return `${h}h:${m}m:${s}s`;
+    const m = Math.floor((seconds % 3600) / 60);
+    const s = String(Math.floor(seconds % 60)).padStart(2, "0");
+    const ms = String(Math.floor((seconds % 1) * 100)).padStart(2, "0");
+    return `${m}m:${s}.${ms}s`;
   };
 
   return isLoading ? (

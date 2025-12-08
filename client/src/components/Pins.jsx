@@ -13,7 +13,7 @@ function Pins({ objects, imgDimension }) {
         return (
           <div
             key={object.id}
-            className="absolute z-40 translate-x-[-50%] translate-y-[-70%]"
+            className="absolute z-2 translate-x-[-50%] translate-y-[-70%]"
             style={findPinPosition(object.x, object.y)}
           >
             <svg

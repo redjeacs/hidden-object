@@ -4,8 +4,8 @@ function Timer({ active, onFinish, timer, setTimer, formatTime }) {
   useEffect(() => {
     if (!active) return;
     const interval = setInterval(() => {
-      setTimer((prev) => prev + 1);
-    }, 1000);
+      setTimer((prev) => prev + 0.01);
+    }, 10);
     return () => clearInterval(interval);
   }, [active]);
 
