@@ -23,3 +23,31 @@ exports.getGame = async (req, res, next) => {
     next(err);
   }
 };
+
+exports.startGameTimer = async (req, res, next) => {
+  try {
+    const gameId = req.params.gameId;
+    const game = await db.startGameTimer(gameId);
+    if (!game) throw new CustomNotFoundError("failed to start timer");
+    res.status(200).json({ startedAt: game.startedAt });
+  } catch (err) {
+    console.error("Timer error: ", err);
+    next(err);
+  }
+};
+
+exports.stopGameTimer = async (req, res, next) => {
+  try {
+    const gameId = req.params.gameId;
+    const game = await db.stopGameTimer(gameId);
+    if (!game) throw new CustomNotFoundError("failed to stop timer");
+    const time =
+      game.startedAt && game.finishedAt
+        ? (new Date(game.finishedAt) - new Date(game.startedAt)) / 1000
+        : null;
+    res.status(200).json({ time: time, finishedAt: game.finishedAt });
+  } catch (err) {
+    console.error("Timer error: ", err);
+    next(err);
+  }
+};

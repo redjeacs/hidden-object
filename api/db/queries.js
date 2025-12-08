@@ -19,3 +19,21 @@ exports.getGame = async (gameId) => {
   });
   return game;
 };
+
+exports.startGameTimer = async (gameId) => {
+  const game = await prisma.game.update({
+    where: { id: gameId },
+    data: { startedAt: new Date(), finishedAt: null },
+  });
+
+  return game;
+};
+
+exports.stopGameTimer = async (gameId) => {
+  const game = await prisma.game.update({
+    where: { id: gameId },
+    data: { finishedAt: new Date() },
+  });
+
+  return game;
+};
