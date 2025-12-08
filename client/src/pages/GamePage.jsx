@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { use, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import Dropdown from "../components/Dropdown";
 import Alert from "../components/Alert";
@@ -8,31 +8,8 @@ import LeaderboardForm from "../components/LeaderboardForm";
 
 function GamePage() {
   const { gameId } = useParams();
-  const [game, setGame] = useState({
-    id: "abar4akdj;ld",
-    title: "Studio Ghibli: Spirited Away",
-    img: "../src/assets/ghibli.jpg",
-    objects: [
-      {
-        id: "1245",
-        img: "../src/assets/object.jpg",
-        name: "Susuwatari",
-        coords: { x: 929, y: 938, radius: 20 },
-      },
-      {
-        id: "1235",
-        img: "../src/assets/object.jpg",
-        name: "Calcifer",
-        coords: { x: 510, y: 533, radius: 15 },
-      },
-      {
-        id: "1234",
-        img: "../src/assets/object.jpg",
-        name: "Kodama",
-        coords: { x: 165, y: 223, radius: 15 },
-      },
-    ],
-  });
+  const [game, setGame] = useState({});
+  const [isLoading, setIsLoading] = useState(true);
   const [coords, setCoords] = useState({ x: null, y: null });
   const [imgDimension, setImgDimension] = useState({
     width: null,
@@ -42,7 +19,7 @@ function GamePage() {
   });
   const [dropdown, setDropdown] = useState(false);
   const [targetBox, SetTargetBox] = useState(false);
-  const [dropdownPosition, setDropdownPosition] = useState({});
+  const [dropdownPosition, setDropdownPosition] = useState();
   const [showAlert, setShowAlert] = useState(false);
   const [alertDetails, setAlertDetails] = useState({
     success: null,
@@ -52,29 +29,34 @@ function GamePage() {
   const [activateModal, setActivateModal] = useState(false);
   const [timer, setTimer] = useState(0);
 
-  // useEffect(() => {
-  //   async function fetchGame() {
-  //     try {
-  //       const res = fetch(`https://localhost:8080/game/${gameId}`);
-  //       const data = await res.json();
+  useEffect(() => {
+    async function fetchGame() {
+      try {
+        const res = await fetch(
+          `${import.meta.env.VITE_API_URL}/game/${gameId}`
+        );
 
-  //       if (res.ok) {
-  //         setGame(data);
-  //       } else {
-  //         console.error("error fetching game");
-  //       }
-  //     } catch (err) {
-  //       console.error("fetch unsuccessful");
-  //     }
-  //   }
-  //   fetchGame();
-  // }, [gameId]);
+        if (!res.ok) {
+          setIsLoading(false);
+          console.error("error fetching game");
+        }
+
+        const game = await res.json();
+        setGame(game);
+        setIsLoading(false);
+      } catch (err) {
+        console.error("fetch unsuccessful");
+      }
+    }
+    fetchGame();
+  }, []);
 
   useEffect(() => {
     const isGameOver = async () => {
       if (
-        game.objects.every((object) => object.isFound) &&
-        game.objects.length > 0
+        Array.isArray(game.objects) &&
+        game.objects.length > 0 &&
+        game.objects.every((object) => object.isFound)
       ) {
         // try {
         //   const res = await fetch(`/api/game/${gameId}/finish`, {
@@ -173,7 +155,9 @@ function GamePage() {
     return `${h}h:${m}m:${s}s`;
   };
 
-  return (
+  return isLoading ? (
+    <div>Loading...</div>
+  ) : (
     <>
       <LeaderboardForm
         activate={activateModal}
@@ -191,7 +175,7 @@ function GamePage() {
           />
         </div>
         <div className="flex items-center gap-4">
-          {game.objects.map((object) => (
+          {game.objects?.map((object) => (
             <div
               key={object.id}
               className="flex items-center justify-center gap-2"
@@ -213,7 +197,7 @@ function GamePage() {
           />
         )}
 
-        <Pins objects={game.objects} imgDimension={imgDimension} />
+        <Pins objects={game.objects || []} imgDimension={imgDimension} />
 
         <img
           src={game.img}

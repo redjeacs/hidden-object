@@ -6,10 +6,10 @@ function Dropdown({
   imgDimension,
   handleAlert,
 }) {
-  const isInTargetBox = (realX, realY, object, imgScale) => {
-    const d = Math.hypot(realX - object.x, realY - object.y); // euclidean distnace = sqrt((x2-x1)^2 + (y2-y1)^2)
+  const isInTargetBox = (realX, realY, x, y, radius, imgScale) => {
+    const d = Math.hypot(realX - x, realY - y); // euclidean distnace = sqrt((x2-x1)^2 + (y2-y1)^2)
     const boxRadius = (75 / 2) * imgScale;
-    const sumOfRadii = boxRadius + object.radius;
+    const sumOfRadii = boxRadius + radius;
 
     return d <= sumOfRadii;
   };
@@ -24,7 +24,9 @@ function Dropdown({
 
     const imgScale = imgDimension.naturalWidth / imgDimension.width;
 
-    if (!isInTargetBox(realX, realY, object.coords, imgScale))
+    if (
+      !isInTargetBox(realX, realY, object.x, object.y, object.radius, imgScale)
+    )
       return handleAlert(false, "Try again!");
     if (object.isFound)
       return handleAlert(false, `You've already found ${object.name}`);

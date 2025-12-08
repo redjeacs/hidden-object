@@ -1,7 +1,7 @@
 function Pins({ objects, imgDimension }) {
-  const findPinPosition = (coords) => {
-    const x = (coords.x / imgDimension.naturalWidth) * imgDimension.width;
-    const y = (coords.y / imgDimension.naturalHeight) * imgDimension.height;
+  const findPinPosition = (objectX, objectY) => {
+    const x = (objectX / imgDimension.naturalWidth) * imgDimension.width;
+    const y = (objectY / imgDimension.naturalHeight) * imgDimension.height;
 
     return { left: x + "px", top: y + "px" };
   };
@@ -14,7 +14,7 @@ function Pins({ objects, imgDimension }) {
           <div
             key={object.id}
             className="absolute z-40 translate-x-[-50%] translate-y-[-70%]"
-            style={findPinPosition(object.coords)}
+            style={findPinPosition(object.x, object.y)}
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
