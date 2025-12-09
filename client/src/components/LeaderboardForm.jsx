@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 function LeaderboardForm({ activate, timer, handleAlert, gameId }) {
   const [hideModal, setHideModal] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const activateModal = () => {
@@ -15,12 +17,19 @@ function LeaderboardForm({ activate, timer, handleAlert, gameId }) {
     const username = e.target.username.value;
 
     try {
-      const res = await fetch(`/api/game/${gameId}/leaderboard`, {
-        method: "POST",
-        body: JSON.stringify({ time: timer, username: username }),
-      });
-      if (!res.ok) return handleAlert(false, "Failed to submit score");
+      const res = await fetch(
+        `${import.meta.env.VITE_API_URL}/game/${gameId}/leaderboard`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ time: timer, username: username }),
+        }
+      );
+      if (!res.ok) {
+        return handleAlert(false, "Failed to submit score");
+      }
       setHideModal(true);
+      navigate("/");
     } catch (err) {
       handleAlert(false, `${err}`);
     }
@@ -31,7 +40,7 @@ function LeaderboardForm({ activate, timer, handleAlert, gameId }) {
       <div
         id="default-modal"
         tabIndex="-1"
-        aria-hidden={hideModal}
+        inert={hideModal}
         className={`bg-black/50 overflow-y-auto overflow-x-hidden fixed flex z-10 justify-center items-center w-full md:inset-0 ${
           hideModal ? "hidden" : ""
         }`}

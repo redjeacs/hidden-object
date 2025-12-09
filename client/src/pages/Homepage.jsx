@@ -10,6 +10,7 @@ function Homepage() {
         const res = await fetch(`${import.meta.env.VITE_API_URL}/games`);
         if (!res.ok) console.error("failed to fetch games");
         const games = await res.json();
+        console.log(games);
         setGames(games);
       } catch (err) {
         return console.error("promise failed ", err);

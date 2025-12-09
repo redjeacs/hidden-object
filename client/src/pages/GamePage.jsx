@@ -171,6 +171,7 @@ function GamePage() {
         activate={activateModal}
         timer={timer}
         handleAlert={handleAlert}
+        gameId={gameId}
       />
       <div className="flex text-white justify-center items-center gap-40 p-3">
         <div className="">

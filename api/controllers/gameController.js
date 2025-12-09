@@ -59,17 +59,14 @@ exports.postScore = [
   async (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty())
-      return res.status(400).json({ error: errors.arrasy() });
+      return res.status(400).json({ error: errors.array() });
     try {
       const { username, time } = matchedData(req);
       const gameId = req.params.gameId;
-      const leaderboard = await db.postScore(username, time, gameId);
+      await db.postScore(username, time, gameId);
+      res.status(200).json({ message: "score posted!" });
     } catch (err) {
       next(err);
     }
   },
 ];
-
-exports.getLeaderboard = async (req, res, next) => {
-  const gameId = req.params.gameId;
-};

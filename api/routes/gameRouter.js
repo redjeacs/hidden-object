@@ -7,5 +7,6 @@ gameRouter.get("/games", gameController.getAllGames);
 gameRouter.get("/game/:gameId", gameController.getGame);
 gameRouter.post("/game/:gameId/start", gameController.startGameTimer);
 gameRouter.post("/game/:gameId/finish", gameController.stopGameTimer);
+gameRouter.post("/game/:gameId/leaderboard", gameController.postScore);
 
 module.exports = gameRouter;

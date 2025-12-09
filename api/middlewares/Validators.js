@@ -7,15 +7,14 @@ exports.validateLeaderboardForm = [
   body("username")
     .trim()
     .notEmpty()
-    .withMessage("Username ", required)
-    .length({ min: 1, max: 50 })
-    .withMessage("Username ", length)
-    .isAlphanumeric()
+    .withMessage("Username " + required)
+    .isLength({ min: 1, max: 50 })
+    .withMessage("Username " + length)
+    .matches(/^[a-zA-Z0-9 ]+$/)
     .withMessage("Username must be alphanumeric"),
   body("time")
-    .trim()
     .notEmpty()
-    .withMessage("Time ", required)
+    .withMessage("Time " + required)
     .isFloat({ min: 0, max: 86400 })
     .withMessage(
       "Time must be a floating number between 0 and 86400 seconds(24hrs)"

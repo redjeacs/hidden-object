@@ -8,14 +8,16 @@ const adapter = new PrismaPg({
 const prisma = new PrismaClient({ adapter });
 
 exports.getAllGames = async () => {
-  const games = await prisma.game.findMany();
+  const games = await prisma.game.findMany({
+    include: { scores: true },
+  });
   return games;
 };
 
 exports.getGame = async (gameId) => {
   const game = await prisma.game.findUnique({
     where: { id: gameId },
-    include: { objects: true },
+    include: { objects: true, scores: true },
   });
   return game;
 };
@@ -36,4 +38,14 @@ exports.stopGameTimer = async (gameId) => {
   });
 
   return game;
+};
+
+exports.postScore = async (username, time, gameId) => {
+  await prisma.score.create({
+    data: {
+      username: username,
+      time: time,
+      game: { connect: { id: gameId } },
+    },
+  });
 };
