@@ -70,3 +70,14 @@ exports.postScore = [
     }
   },
 ];
+
+exports.getScores = async (req, res, next) => {
+  const gameId = req.params.gameId;
+  try {
+    const scores = await db.getScores(gameId);
+    if (!scores) res.status(400).json({ message: "failed to fetch scores" });
+    res.status(200).json({ scores: scores });
+  } catch (err) {
+    next(err);
+  }
+};

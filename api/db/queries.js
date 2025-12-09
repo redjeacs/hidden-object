@@ -49,3 +49,12 @@ exports.postScore = async (username, time, gameId) => {
     },
   });
 };
+
+exports.getScores = async (gameId) => {
+  const scores = await prisma.score.findMany({
+    where: { gameId: gameId },
+    orderBy: { time: "asc" },
+  });
+
+  return scores;
+};

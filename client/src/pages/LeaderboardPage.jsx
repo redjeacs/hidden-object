@@ -13,8 +13,8 @@ function LeaderboardPage() {
           `${import.meta.env.VITE_API_URL}/game/${gameId}/leaderboard`
         );
         if (!res.ok) console.error("failed to fetch leaderboard");
-        const scores = res.json();
-        setLeaderboard(scores);
+        const data = res.json();
+        setLeaderboard(data.scores);
       } catch (err) {
         console.error(err);
       }
