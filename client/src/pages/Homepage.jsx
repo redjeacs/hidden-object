@@ -1,27 +1,12 @@
-import { useEffect, useState } from "react";
 import Card from "../components/Card";
+import { useOutletContext } from "react-router-dom";
 
 function Homepage() {
-  const [games, setGames] = useState([]);
-
-  useEffect(() => {
-    const fetchGames = async () => {
-      try {
-        const res = await fetch(`${import.meta.env.VITE_API_URL}/games`);
-        if (!res.ok) console.error("failed to fetch games");
-        const games = await res.json();
-        console.log(games);
-        setGames(games);
-      } catch (err) {
-        return console.error("promise failed ", err);
-      }
-    };
-    fetchGames();
-  }, []);
-
+  const { games } = useOutletContext();
   return (
-    <div className="flex flex-col h-full">
-      <div className="grid grid-cols-[repeat(auto-fit,minmax(200px,1fr))] min-w-[300px] max-w-[90vw] p-4 text-white justify-items-center items-center grow self-center gap-8">
+    <div className="flex flex-col h-full items-center justify-center">
+      <h1 className="text-4xl ">Games</h1>
+      <div className="grid grid-cols-[repeat(auto-fit,minmax(200px,1fr))] min-w-[300px] max-w-[90vw] p-4 text-white justify-items-center items-center self-center gap-8">
         {games &&
           games.map((game) => {
             return <Card key={game.id} game={game} />;
