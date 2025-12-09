@@ -12,10 +12,12 @@ function LeaderboardForm({ activate, timer, handleAlert, gameId }) {
 
   const handleLeaderBoardSubmit = async (e) => {
     e.preventDefault();
+    const username = e.target.username.value;
 
     try {
       const res = await fetch(`/api/game/${gameId}/leaderboard`, {
         method: "POST",
+        body: JSON.stringify({ time: timer, username: username }),
       });
       if (!res.ok) return handleAlert(false, "Failed to submit score");
       setHideModal(true);

@@ -7,25 +7,34 @@ datasource db {
 }
 
 model Game {
-  id         String    @id @default(uuid())
-  title      String
-  img        String
-  finishedAt DateTime?
-  startedAt  DateTime?
-  objects    Object[]
+  id          String    @id @default(uuid())
+  title       String
+  img         String
+  finishedAt  DateTime?
+  startedAt   DateTime?
+  objects     Object[]
+  scores      Score[]
 
   @@map("game")
 }
 
 model Object {
-  id     String @id @default(uuid())
-  name   String
-  img    String
-  gameId String
-  x      Float
-  y      Float
-  radius Float
-  game   Game   @relation(fields: [gameId], references: [id], onDelete: Cascade)
+  id          String    @id @default(uuid())
+  name        String
+  img         String
+  gameId      String
+  x           Float
+  y           Float
+  radius      Float
+  game        Game      @relation(fields: [gameId], references: [id], onDelete: Cascade)
 
   @@map("object")
+}
+
+model Score {
+  id          String    @id@default(uuid())
+  username    String
+  time        Float
+  gameId      String
+  game        Game      @relation(fields: [gameId], references: [id], onDelete: Cascade)
 }

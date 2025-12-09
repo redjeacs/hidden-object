@@ -169,7 +169,7 @@ function GamePage() {
     <>
       <LeaderboardForm
         activate={activateModal}
-        timer={formatTime(timer)}
+        timer={timer}
         handleAlert={handleAlert}
       />
       <div className="flex text-white justify-center items-center gap-40 p-3">
