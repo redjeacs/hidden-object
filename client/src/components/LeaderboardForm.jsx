@@ -29,7 +29,7 @@ function LeaderboardForm({ activate, timer, handleAlert, gameId }) {
         return handleAlert(false, "Failed to submit score");
       }
       setHideModal(true);
-      navigate("/");
+      navigate("/leaderboard", { state: { fromGame: gameId } });
     } catch (err) {
       handleAlert(false, `${err}`);
     }

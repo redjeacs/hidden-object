@@ -1,14 +1,21 @@
 import { useEffect, useState } from "react";
-import { useOutletContext } from "react-router-dom";
+import { useOutletContext, useLocation } from "react-router-dom";
 
 function LeaderboardPage() {
   const { games } = useOutletContext();
+  const location = useLocation();
+  const fromGameId = location.state?.fromGame;
   const [gameId, setGameId] = useState("");
   const [scores, setScores] = useState([]);
 
   useEffect(() => {
-    if (games && games.length > 0 && !gameId) setGameId(games[0].id);
-  });
+    const findInitialGame = () => {
+      if (games && games.length > 0) {
+        setGameId(fromGameId || games[0].id);
+      }
+    };
+    findInitialGame();
+  }, [games, fromGameId]);
 
   useEffect(() => {
     if (!gameId) return;
