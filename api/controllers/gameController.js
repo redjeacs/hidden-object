@@ -1,5 +1,7 @@
 const db = require("../db/queries");
 const CustomNotFoundError = require("../middlewares/CustomNotFoundError");
+const validators = require("../middlewares/Validators");
+const { matchedData, validationResult } = require("express-validator");
 
 exports.getAllGames = async (req, res, next) => {
   try {
@@ -50,4 +52,24 @@ exports.stopGameTimer = async (req, res, next) => {
     console.error("Timer error: ", err);
     next(err);
   }
+};
+
+exports.postScore = [
+  validators.validateLeaderboardForm,
+  async (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty())
+      return res.status(400).json({ error: errors.arrasy() });
+    try {
+      const { username, time } = matchedData(req);
+      const gameId = req.params.gameId;
+      const leaderboard = await db.postScore(username, time, gameId);
+    } catch (err) {
+      next(err);
+    }
+  },
+];
+
+exports.getLeaderboard = async (req, res, next) => {
+  const gameId = req.params.gameId;
 };
