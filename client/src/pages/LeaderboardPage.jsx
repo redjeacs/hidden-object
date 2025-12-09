@@ -69,20 +69,20 @@ function LeaderboardPage() {
         <h1 className="text-xl">
           {games.find((game) => game.id === gameId)?.title}
         </h1>
-        <table className="border border-gray-1 w-1/3 text-white">
+        <table className="border border-gray-1 w-1/3 text-white overflow-auto border-separate rounded-lg">
           <thead>
             <tr className="bg-slate-600">
-              <th>Rank</th>
-              <th>Username</th>
-              <th>Time</th>
+              <th className="p-2">Rank</th>
+              <th className="p-2">Username</th>
+              <th className="p-2">Time</th>
             </tr>
           </thead>
           <tbody>
             {scores.map((score, index) => (
               <tr key={index} className="text-lg text-center">
-                <td>{index + 1}</td>
-                <td>{score.username}</td>
-                <td>{score.time}</td>
+                <td className="p-2">{index + 1}</td>
+                <td className="p-2">{score.username}</td>
+                <td className="p-2">{score.time}</td>
               </tr>
             ))}
           </tbody>
